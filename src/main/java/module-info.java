@@ -1,8 +1,9 @@
-module inf202_klassen {
+module inf202 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
 
-    opens inf202_klassen to javafx.fxml;
-    exports inf202_klassen;
+    opens inf202 to javafx.fxml;
+    exports inf202;
 }
