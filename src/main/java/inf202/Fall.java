@@ -6,13 +6,15 @@ public class Fall {
     private String fallArt;
     private String fallCode;
     private String fallDescription;
+    private String caseDate;
     private String fallState; //on-going, closed
 
-    public Fall(int fallId, String fallArt, String fallCode, String fallDescription, String fallState) {
+    public Fall(int fallId, String fallArt, String fallCode, String fallDescription, String caseDate, String fallState) {
         this.fallId = fallId;
         this.fallArt = fallArt;
         this.fallCode = fallCode;
         this.fallDescription = fallDescription;
+        this.caseDate = caseDate;
         this.fallState = fallState;
     }
 
@@ -54,5 +56,13 @@ public class Fall {
 
     public void setFallState(String fallState) {
         this.fallState = fallState;
+    }
+
+    public String date() {
+        return caseDate;
+    }
+
+    public void date(String fallState) {
+        this.caseDate = caseDate;
     }
 }
