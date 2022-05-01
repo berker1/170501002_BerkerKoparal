@@ -24,6 +24,7 @@ public class Main extends Application {
         Database db = new Database();
         db.connection_db();
         //db.login_db("lawyer", "lawyer");
+        //db.add_lawyer();
         launch();
     }
 
