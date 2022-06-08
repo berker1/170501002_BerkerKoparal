@@ -20,6 +20,11 @@ public class Anwalt extends Person{
         this.fallIds = fallIds;
     }
 
+    public Anwalt(String vorname, String nachname, String branche) {
+        super(vorname, nachname);
+        this.branche = branche;
+    }
+
 
     public String getBranche() {
         return branche;

@@ -23,7 +23,7 @@
       <TextField fx:id="tf_caseClass" layoutX="63.0" layoutY="106.0" prefHeight="26.0" prefWidth="127.0" />
       <TextField fx:id="tf_caseCode" layoutX="300.0" layoutY="66.0" prefHeight="26.0" prefWidth="114.0" />
       <TextField fx:id="tf_caseState" layoutX="300.0" layoutY="106.0" prefHeight="26.0" prefWidth="114.0" />
-      <TextArea layoutX="27.0" layoutY="175.0" prefHeight="200.0" prefWidth="405.0" />
+      <TextArea fx:id="ta_description" id="ta_description" layoutX="27.0" layoutY="175.0" prefHeight="200.0" prefWidth="405.0" />
       <Button fx:id="btn_caseSave" layoutX="169.0" layoutY="390.0" mnemonicParsing="false" onAction="#caseSave" text="Save" />
       <Button fx:id="btn_backToVerwaltung" layoutX="268.0" layoutY="390.0" mnemonicParsing="false" onAction="#backToVerwaltung" text="back" />
    </children>

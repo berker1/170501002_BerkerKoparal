@@ -11,10 +11,10 @@
 
 <AnchorPane prefHeight="414.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="inf202.Controller_lawyer">
    <children>
-      <Text layoutX="14.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lowyer name, surnmae" wrappingWidth="217.336669921875" />
-      <TableView layoutX="14.0" layoutY="47.0" prefHeight="314.0" prefWidth="127.0">
+      <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lowyer name, surnmae" wrappingWidth="217.336669921875" />
+      <TableView id="caseTable" fx:id="caseTable" layoutX="14.0" layoutY="47.0" prefHeight="314.0" prefWidth="127.0">
         <columns>
-          <TableColumn prefWidth="127.199951171875" text="Cases" />
+          <TableColumn id="cases" fx:id="cases" prefWidth="127.199951171875" text="Cases" />
         </columns>
       </TableView>
       <Text fill="#050505" layoutX="173.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case Info" textAlignment="CENTER" wrappingWidth="377.33673095703125">
@@ -26,13 +26,14 @@
       <Text layoutX="388.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case  Class:" wrappingWidth="64.491455078125" />
       <Text layoutX="164.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case Code:" wrappingWidth="64.491455078125" />
       <Text layoutX="164.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case Description:" wrappingWidth="115.04296875" />
-      <TextField editable="false" layoutX="233.0" layoutY="83.0" prefHeight="26.0" prefWidth="136.0" text="#" />
-      <TextField editable="false" layoutX="233.0" layoutY="115.0" prefHeight="26.0" prefWidth="136.0" text="#" />
-      <TextField editable="false" layoutX="452.0" layoutY="83.0" prefHeight="26.0" prefWidth="127.0" text="#" />
-      <TextArea editable="false" layoutX="179.0" layoutY="172.0" prefHeight="190.0" prefWidth="402.0" text="#" />
+      <TextField fx:id="tf_case_date" id="tf_case_date" editable="false" layoutX="233.0" layoutY="83.0" prefHeight="26.0" prefWidth="136.0" text="#" />
+      <TextField fx:id="tf_case_code" id="tf_case_code" editable="false" layoutX="233.0" layoutY="115.0" prefHeight="26.0" prefWidth="136.0" text="#" />
+      <TextField fx:id="tf_case_class" id="tf_case_class" editable="false" layoutX="452.0" layoutY="83.0" prefHeight="26.0" prefWidth="127.0" text="#" />
+      <TextArea fx:id="ta_case_description" id="ta_case_description" editable="false" layoutX="179.0" layoutY="172.0" prefHeight="190.0" prefWidth="402.0" text="#" />
       <Text layoutX="388.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case State:" wrappingWidth="64.491455078125" />
-      <TextField editable="false" layoutX="452.0" layoutY="115.0" prefHeight="26.0" prefWidth="127.0" text="#" />
+      <TextField fx:id="tf_case_state" id="tf_case_state"  editable="false" layoutX="452.0" layoutY="115.0" prefHeight="26.0" prefWidth="127.0" text="#" />
       <Button id="btnBackToManagerPage" fx:id="btnBackToManagerPage" layoutX="530.0" layoutY="16.0" mnemonicParsing="false" onAction="#toManagerPage" text="back" visible="false" />
       <Button fx:id="btn_logout" layoutX="524.0" layoutY="373.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
+      <Button id="btn_show_details" fx:id="btn_show_details" layoutX="24.0" layoutY="372.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="26.0" prefWidth="107.0" text="Show Details" />
    </children>
 </AnchorPane>

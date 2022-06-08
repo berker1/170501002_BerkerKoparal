@@ -10,6 +10,11 @@ public class Person {
     private String geschlecht;
     private int alter;
 
+    public Person(String vorname, String nachname) {
+        this.vorname = vorname;
+        this.nachname = nachname;
+    }
+
     public String getVorname() {
         return vorname;
     }
