@@ -8,10 +8,22 @@ import java.sql.*;
 
 public class Database {
 
-    public void connection_db() {
+    public static Connection connectDB() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/inf202db",
                     "root", "Yazmuh18proje_");
+            Statement statement = connection.createStatement();
+            System.out.println("SQL connected");
+            return connection;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void connection_db() {
+        try {
+            Connection connection = connectDB();
             Statement statement = connection.createStatement();
             System.out.println("SQL connected");
         } catch (Exception e) {
@@ -21,8 +33,7 @@ public class Database {
 
     public int login_db(String userName, String password) throws SQLException {
         int login = 0;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/inf202db",
-                "root", "Yazmuh18proje_");
+        Connection connection = connectDB();
         PreparedStatement loginStatement = connection.prepareStatement("select * from person where userName = ? " +
                 "and userPassword = ?");
         loginStatement.setString(1, userName);
@@ -35,8 +46,10 @@ public class Database {
             System.out.println("TC Number: " + rs.getInt("TcNummer"));
             System.out.println("User Name " + rs.getString("userName"));
             login = rs.getInt("login");
-            PreparedStatement statement = connection.prepareStatement("update user set userTC = ? where userTC = 333");
+            //PreparedStatement statement = connection.prepareStatement("update user set userTC = ? where userTC = 333");
+            PreparedStatement statement = connection.prepareStatement("update user set userTC = ? where userName = ?");
             statement.setInt(1,rs.getInt("TcNummer"));
+            statement.setString(2,"currentUser");
             statement.executeUpdate();
             getUserTC();
         }
@@ -46,8 +59,7 @@ public class Database {
 
     public void add_case(String caseDate, String caseCode, String caseClass, String caseState, String description) throws SQLException {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/inf202db",
-                    "root", "Yazmuh18proje_");
+            Connection connection = connectDB();
             PreparedStatement addStatement = connection.prepareStatement("insert into fall (fallArt, fallCode, fallState, caseDate, fallDescription)" +
                     "values(?, ?, ?, ?, ?)");
             addStatement.setString(1,caseClass);
@@ -74,26 +86,12 @@ public class Database {
         return userTC;
     }
 
-    public static Connection connectDB() {
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/inf202db",
-                    "root", "Yazmuh18proje_");
-            Statement statement = connection.createStatement();
-            System.out.println("SQL connected");
-            return connection;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static Fall show_case_details(String value) throws SQLException {
+    public static Fall show_case_details(int value) throws SQLException {
         Fall selectedFall = null;
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/inf202db",
-                    "root", "Yazmuh18proje_");
-            PreparedStatement statement = connection.prepareStatement("select * from fall where fallCode = ?");
-            statement.setString(1, value);
+            Connection connection = connectDB();
+            PreparedStatement statement = connection.prepareStatement("select * from fall where id_fall = ?");
+            statement.setInt(1, value);
 
             ResultSet rs = statement.executeQuery();
 
@@ -109,12 +107,18 @@ public class Database {
         }
     }
 
-    public static ObservableList<Fall> getDataFall(){
+    public static ObservableList<Fall> getDataFall(int tc, int index){
         Connection connection = connectDB();
         ObservableList<Fall> list = FXCollections.observableArrayList();
-
+        String sql;
         try {
-            PreparedStatement ps = connection.prepareStatement("select * from fall");
+            if(index == 3){
+                sql = "select * from fall where caseForLawyer = ?";
+            }else {
+                sql = "select * from fall where caseForManager = ?";
+            }
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1,tc);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
@@ -129,13 +133,14 @@ public class Database {
         return list;
     }
 
-    public static ObservableList<Fall> getDataFallForLawyer(String lawyer_tc){
+    public static ObservableList<Fall> getAssignableCases(int tc){
         Connection connection = connectDB();
         ObservableList<Fall> list = FXCollections.observableArrayList();
-
+        String sql = "select * from fall where caseForLawyer = ? and caseForManager = ?";
         try {
-            PreparedStatement ps = connection.prepareStatement("select * from fall where caseForLawyer = ?");
-            ps.setString(1, lawyer_tc);
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1,-1);
+            ps.setInt(2,tc);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
@@ -149,6 +154,7 @@ public class Database {
 
         return list;
     }
+
 
     public static ObservableList<Fall> getDataFallForManager(String manager_tc){
         Connection connection = connectDB();
@@ -183,10 +189,11 @@ public class Database {
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 list.add(new Anwalt(rs.getString("vorname"),rs.getString("nachname"),
-                        rs.getString("branche")));
+                        rs.getString("branche"), rs.getInt("tcNummer")));
                 System.out.println("lawyer in manager group: " + rs.getString("branche"));
                 System.out.println("lawyer in manager group: " + rs.getString("vorname"));
                 System.out.println("lawyer in manager group: " + rs.getString("nachname"));
+                System.out.println("lawyer in manager group: " + rs.getString("tcNummer"));
             }
         }catch (Exception e){
 
@@ -194,4 +201,56 @@ public class Database {
         return list;
     }
 
+    public static void assignCase(int tc, int caseID, int index) throws SQLException {
+        Connection connection = connectDB();
+        String sql;
+        if(index == 3){
+            sql = "update fall set caseForLawyer = ? where id_fall = ?";
+        }else{
+            sql = "update fall set caseForManager = ? where id_fall = ?";
+        }
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1,tc);
+        statement.setInt(2,caseID);
+        statement.executeUpdate();
+    }
+
+    public static ObservableList<Fall> getDataCaseAssignedForLawyer(int tc, int index){
+        Connection connection = connectDB();
+        ObservableList<Fall> list = FXCollections.observableArrayList();
+        String sql;
+        if(index == 3){
+            sql = "select * from fall where caseForLawyer = ?";
+        }else{
+            sql = "update fall set caseForManager = ?";
+        }
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, tc);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                list.add(new Fall(Integer.parseInt(rs.getString("id_fall")),rs.getString("fallArt"),
+                        rs.getString("fallCode"), rs.getString("fallDescription"),
+                        rs.getString("fallState"), rs.getString("caseDate")));
+            }
+        }catch (Exception e){
+
+        }
+        return list;
+    }
+
+    public static void retainCase(int tc, int caseID, int index) throws SQLException {
+        Connection connection = connectDB();
+        String sql;
+        if(index == 3){
+            sql = "update fall set caseForLawyer = -1 where caseForLawyer = ? and id_fall = ?";
+        }else{
+            sql = "update fall set caseForManager = ? where caseForManager = ? and id_fall = ?";
+        }
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1,tc);
+        statement.setInt(2,caseID);
+        statement.executeUpdate();
+    }
 }
+

@@ -10,7 +10,7 @@ public class Anwalt extends Person{
     private ArrayList<Integer> fallIds;
     private int loginAnwalt = 1;
 
-    public Anwalt(String vorname, String nachname, String tcNummer, String email, String kontaktNummer,
+    public Anwalt(String vorname, String nachname, int tcNummer, String email, String kontaktNummer,
                   String geschlecht, int alter,String branche, String userName, String userPassword,
                   ArrayList<Integer> fallIds ) {
         super(vorname, nachname, tcNummer, email, kontaktNummer, geschlecht, alter);
@@ -20,8 +20,8 @@ public class Anwalt extends Person{
         this.fallIds = fallIds;
     }
 
-    public Anwalt(String vorname, String nachname, String branche) {
-        super(vorname, nachname);
+    public Anwalt(String vorname, String nachname, String branche, int tcNummer) {
+        super(vorname, nachname, tcNummer );
         this.branche = branche;
     }
 

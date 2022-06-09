@@ -11,7 +11,7 @@ public class Fall {
     private String caseForLawyer;
     private String caseForManager;
 
-    public Fall(int fallId, String fallArt, String fallCode, String fallDescription, String caseDate, String fallState) {
+    public Fall(int fallId, String fallArt, String fallCode, String fallDescription,String fallState, String caseDate) {
         this.fallId = fallId;
         this.fallArt = fallArt;
         this.fallCode = fallCode;

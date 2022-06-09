@@ -27,15 +27,15 @@ public class Controller_lawyer implements Initializable {
     private Parent root;
 
     @FXML
-    Button btnBackToManagerPage, btn_logout, btn_show_details;
+    private Button btnBackToManagerPage, btn_logout, btn_show_details;
     @FXML
     private TableView<Fall> caseTable;
     @FXML
     private TableColumn<Fall,String> cases;
     @FXML
-    TextField tf_case_date, tf_case_class, tf_case_code, tf_case_state;
+    private TextField tf_case_date, tf_case_class, tf_case_code, tf_case_state;
     @FXML
-    TextArea ta_case_description;
+    private TextArea ta_case_description;
 
     ObservableList<Fall> listM;
 
@@ -48,13 +48,17 @@ public class Controller_lawyer implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cases.setCellValueFactory(new PropertyValueFactory<Fall, String>("fallCode"));
 
-        listM = Database.getDataFall();
+        try {
+            listM = Database.getDataFall(Database.getUserTC(), 3);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         caseTable.setItems(listM);
     }
 
     public void showDetails() throws SQLException {
-        String fallCode = caseTable.getItems().get(caseTable.getSelectionModel().getSelectedIndex()).getFallCode();
-        Fall fallSelected = Database.show_case_details(fallCode);
+        int caseID = caseTable.getItems().get(caseTable.getSelectionModel().getSelectedIndex()).getFallId();
+        Fall fallSelected = Database.show_case_details(caseID);
         tf_case_date.setText(fallSelected.getCaseDate());
         tf_case_class.setText(fallSelected.getFallArt());
         tf_case_code.setText(fallSelected.getFallCode());

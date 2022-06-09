@@ -10,7 +10,7 @@ public class Manager extends Person{
     private ArrayList<Integer> fallIds;
     private int loginManager = 2;
 
-    public Manager(String vorname, String nachname, String tcNummer, String email, String kontaktNummer,
+    public Manager(String vorname, String nachname, int tcNummer, String email, String kontaktNummer,
                    String geschlecht, int alter,String branche, String userName, String userPassword,
                    ArrayList<Integer> fallIds ) {
         super(vorname, nachname, tcNummer, email, kontaktNummer, geschlecht, alter);

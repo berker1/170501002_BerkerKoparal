@@ -4,16 +4,18 @@ public class Person {
 
     private String vorname;
     private String nachname;
-    private String tcNummer;
+    private int tcNummer;
     private String email;
     private String kontaktNummer;
     private String geschlecht;
     private int alter;
 
-    public Person(String vorname, String nachname) {
+    public Person(String vorname, String nachname, int tcNummer) {
         this.vorname = vorname;
         this.nachname = nachname;
+        this.tcNummer = tcNummer;
     }
+
 
     public String getVorname() {
         return vorname;
@@ -31,11 +33,11 @@ public class Person {
         this.nachname = nachname;
     }
 
-    public String getTcNummer() {
+    public int getTcNummer() {
         return tcNummer;
     }
 
-    public void setTcNummer(String tcNummer) {
+    public void setTcNummer(int tcNummer) {
         this.tcNummer = tcNummer;
     }
 
@@ -72,7 +74,7 @@ public class Person {
     }
 
 
-    public Person(String vorname, String nachname, String tcNummer,
+    public Person(String vorname, String nachname, int tcNummer,
                   String email, String kontaktNummer, String geschlecht, int alter
                   ) {
         this.vorname = vorname;
