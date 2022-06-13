@@ -36,9 +36,18 @@ public class Controller_case {
     }
 
     public void caseSave( ActionEvent e) throws SQLException {
+        if(tf_caseCode.getText() != null && tf_caseClass.getText() != null){
+            if (tf_caseState.getText() == null || tf_caseState.getText().length() < 3){
+                db.add_case(tf_caseDate.getText(), tf_caseCode.getText(), tf_caseClass.getText(),
+                        "on-going", ta_description.getText());
+            }else{
+                db.add_case(tf_caseDate.getText(), tf_caseCode.getText(), tf_caseClass.getText(),
+                        tf_caseState.getText(), ta_description.getText());
+                System.out.printf(ta_description.getText());
+            }
 
-        db.add_case(tf_caseDate.getText(), tf_caseCode.getText(), tf_caseClass.getText(),
-                tf_caseState.getText(), ta_description.getText());
-        System.out.printf(ta_description.getText());
+        }else {
+            System.out.println("casecode or caseclass can not be null");
+        }
     }
 }

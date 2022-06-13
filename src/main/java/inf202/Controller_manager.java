@@ -53,8 +53,8 @@ public class Controller_manager implements Initializable {
     @FXML
     private TableColumn<Fall, String> cases;
 
-    ObservableList<Anwalt> listA;
-    ObservableList<Fall> listB;
+    private ObservableList<Anwalt> listL;
+    private ObservableList<Fall> ListC;
 
     int imdex = -1;
     Connection conn = null;
@@ -66,40 +66,29 @@ public class Controller_manager implements Initializable {
         btn_assign_case.setVisible(false);
         btn_retain_case.setVisible(false);
 
-        lawyerName.setCellValueFactory(new PropertyValueFactory<Anwalt, String>("vorname"));
-        lawyerSurname.setCellValueFactory(new PropertyValueFactory<Anwalt, String>("nachname"));
-        lawyerBranche.setCellValueFactory(new PropertyValueFactory<Anwalt, String>("branche"));
-
-        try {
-            listA = Database.getLawyersForManager(Database.getUserTC());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-       tableLawyers.setItems(listA);
-
+        getAllLawyers();
         getAllCases();
 
     }
 
+    public void getAllLawyers(){
+        lawyerName.setCellValueFactory(new PropertyValueFactory<Anwalt, String>("vorname"));
+        lawyerSurname.setCellValueFactory(new PropertyValueFactory<Anwalt, String>("nachname"));
+        lawyerBranche.setCellValueFactory(new PropertyValueFactory<Anwalt, String>("branche"));
+        listL = Database.getLawyersForManager(Database.getUserTC());
+        tableLawyers.setItems(listL);
+    }
+
     public void getAllCases(){
         cases.setCellValueFactory(new PropertyValueFactory<Fall, String>("fallCode"));
-        try {
-            listB = Database.getDataFall(Database.getUserTC(), 2);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        tableCase.setItems(listB);
+        ListC = Database.getDataFall(Database.getUserTC(), 2);
+        tableCase.setItems(ListC);
     }
 
     public void getAssignableCases(){
         cases.setCellValueFactory(new PropertyValueFactory<Fall, String>("fallCode"));
-        try {
-            listB = Database.getAssignableCases(Database.getUserTC());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        tableCase.setItems(listB);
+        ListC = Database.getAssignableCasesInManager(Database.getUserTC());
+        tableCase.setItems(ListC);
     }
 
     public void showAllCases(ActionEvent e) throws IOException{
@@ -125,8 +114,8 @@ public class Controller_manager implements Initializable {
     public void showAssignedCases(ActionEvent e){
         int tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
         int index = 3;
-        listB = Database.getDataCaseAssignedForLawyer(tc, index);
-        tableCase.setItems(listB);
+        ListC = Database.getDataAssignedCases(tc, index);
+        tableCase.setItems(ListC);
         btn_retain_case.setVisible(true);
         btn_assign_case.setVisible(false);
     }

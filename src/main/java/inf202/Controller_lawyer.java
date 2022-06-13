@@ -48,11 +48,7 @@ public class Controller_lawyer implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cases.setCellValueFactory(new PropertyValueFactory<Fall, String>("fallCode"));
 
-        try {
-            listM = Database.getDataFall(Database.getUserTC(), 3);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        listM = Database.getDataFall(Database.getUserTC(), 3);
         caseTable.setItems(listM);
     }
 

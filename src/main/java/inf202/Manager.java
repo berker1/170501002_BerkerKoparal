@@ -20,6 +20,11 @@ public class Manager extends Person{
         this.fallIds = fallIds;
     }
 
+    public Manager(String vorname, String nachname, String branche, int tcNummer) {
+        super(vorname, nachname, tcNummer);
+        this.branche = branche;
+    }
+
 
     public String getBranche() {
         return branche;

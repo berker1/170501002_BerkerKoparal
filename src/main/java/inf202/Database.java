@@ -31,6 +31,9 @@ public class Database {
         }
     }
 
+    private static String userInfo;
+    private static int userTcInfo;
+
     public int login_db(String userName, String password) throws SQLException {
         int login = 0;
         Connection connection = connectDB();
@@ -42,18 +45,31 @@ public class Database {
         ResultSet rs = loginStatement.executeQuery();
         while (rs.next()) {
             System.out.println("User Informations: ");
+            System.out.println("name:" + rs.getString("vorname"));
+            System.out.println("surname:" + rs.getString("nachname"));
+            userInfo = rs.getString("vorname") + " " + rs.getString("nachname");
+            System.out.println("username: " + userInfo);
             System.out.println("Login Code " + rs.getInt("login"));
             System.out.println("TC Number: " + rs.getInt("TcNummer"));
+            userTcInfo =  rs.getInt("TcNummer");
             System.out.println("User Name " + rs.getString("userName"));
             login = rs.getInt("login");
             //PreparedStatement statement = connection.prepareStatement("update user set userTC = ? where userTC = 333");
             PreparedStatement statement = connection.prepareStatement("update user set userTC = ? where userName = ?");
-            statement.setInt(1,rs.getInt("TcNummer"));
-            statement.setString(2,"currentUser");
+            statement.setInt(1, rs.getInt("TcNummer"));
+            statement.setString(2, "currentUser");
             statement.executeUpdate();
-            getUserTC();
+            //getUserTC();
         }
         return login;
+    }
+
+    public static String getUserInfo(){
+        return userInfo;
+    }
+
+    public static int getUserTC(){
+        return userTcInfo;
     }
 
 
@@ -62,11 +78,11 @@ public class Database {
             Connection connection = connectDB();
             PreparedStatement addStatement = connection.prepareStatement("insert into fall (fallArt, fallCode, fallState, caseDate, fallDescription)" +
                     "values(?, ?, ?, ?, ?)");
-            addStatement.setString(1,caseClass);
-            addStatement.setString(2,caseCode);
-            addStatement.setString(3,caseState);
-            addStatement.setString(4,caseDate);
-            addStatement.setString(5,description);
+            addStatement.setString(1, caseClass);
+            addStatement.setString(2, caseCode);
+            addStatement.setString(3, caseState);
+            addStatement.setString(4, caseDate);
+            addStatement.setString(5, description);
             addStatement.execute();
             System.out.println("New Case Added");
         } catch (Exception e) {
@@ -74,6 +90,7 @@ public class Database {
         }
     }
 
+    /*
     public static int getUserTC() throws SQLException {
         int userTC = 0;
         Connection connection = connectDB();
@@ -86,6 +103,8 @@ public class Database {
         return userTC;
     }
 
+     */
+
     public static Fall show_case_details(int value) throws SQLException {
         Fall selectedFall = null;
         try {
@@ -95,8 +114,8 @@ public class Database {
 
             ResultSet rs = statement.executeQuery();
 
-            while(rs.next()){
-                selectedFall = new Fall(Integer.parseInt(rs.getString("id_fall")),rs.getString("fallArt"),
+            while (rs.next()) {
+                selectedFall = new Fall(Integer.parseInt(rs.getString("id_fall")), rs.getString("fallArt"),
                         rs.getString("fallCode"), rs.getString("fallDescription"),
                         rs.getString("fallState"), rs.getString("caseDate"));
             }
@@ -107,48 +126,48 @@ public class Database {
         }
     }
 
-    public static ObservableList<Fall> getDataFall(int tc, int index){
+    public static ObservableList<Fall> getDataFall(int tc, int index) {
         Connection connection = connectDB();
         ObservableList<Fall> list = FXCollections.observableArrayList();
         String sql;
         try {
-            if(index == 3){
+            if (index == 3) {
                 sql = "select * from fall where caseForLawyer = ?";
-            }else {
+            } else {
                 sql = "select * from fall where caseForManager = ?";
             }
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1,tc);
+            ps.setInt(1, tc);
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()){
-                list.add(new Fall(Integer.parseInt(rs.getString("id_fall")),rs.getString("fallArt"),
+            while (rs.next()) {
+                list.add(new Fall(Integer.parseInt(rs.getString("id_fall")), rs.getString("fallArt"),
                         rs.getString("fallCode"), rs.getString("fallDescription"),
                         rs.getString("fallState"), rs.getString("caseDate")));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
         return list;
     }
 
-    public static ObservableList<Fall> getAssignableCases(int tc){
+    public static ObservableList<Fall> getAssignableCasesInManager(int tc) {
         Connection connection = connectDB();
         ObservableList<Fall> list = FXCollections.observableArrayList();
         String sql = "select * from fall where caseForLawyer = ? and caseForManager = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1,-1);
-            ps.setInt(2,tc);
+            ps.setInt(1, -1);
+            ps.setInt(2, tc);
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()){
-                list.add(new Fall(Integer.parseInt(rs.getString("id_fall")),rs.getString("fallArt"),
+            while (rs.next()) {
+                list.add(new Fall(Integer.parseInt(rs.getString("id_fall")), rs.getString("fallArt"),
                         rs.getString("fallCode"), rs.getString("fallDescription"),
                         rs.getString("fallState"), rs.getString("caseDate")));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -156,29 +175,8 @@ public class Database {
     }
 
 
-    public static ObservableList<Fall> getDataFallForManager(String manager_tc){
-        Connection connection = connectDB();
-        ObservableList<Fall> list = FXCollections.observableArrayList();
-
-        try {
-            PreparedStatement ps = connection.prepareStatement("select * from fall where caseForManager = ?");
-            ps.setString(1, manager_tc);
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()){
-                list.add(new Fall(Integer.parseInt(rs.getString("id_fall")),rs.getString("fallArt"),
-                        rs.getString("fallCode"), rs.getString("fallDescription"),
-                        rs.getString("fallState"), rs.getString("caseDate")));
-            }
-        }catch (Exception e){
-
-        }
-
-        return list;
-    }
-
-    public static ObservableList<Anwalt> getLawyersForManager(int manager_tc){
-    //public static ObservableList<Anwalt> getLawyersForManager(){
+    public static ObservableList<Anwalt> getLawyersForManager(int manager_tc) {
+        //public static ObservableList<Anwalt> getLawyersForManager(){
         Connection connection = connectDB();
         ObservableList<Anwalt> list = FXCollections.observableArrayList();
 
@@ -187,53 +185,122 @@ public class Database {
             //PreparedStatement ps = connection.prepareStatement("select * from person");
             ps.setInt(1, manager_tc);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                list.add(new Anwalt(rs.getString("vorname"),rs.getString("nachname"),
+            while (rs.next()) {
+                list.add(new Anwalt(rs.getString("vorname"), rs.getString("nachname"),
                         rs.getString("branche"), rs.getInt("tcNummer")));
                 System.out.println("lawyer in manager group: " + rs.getString("branche"));
                 System.out.println("lawyer in manager group: " + rs.getString("vorname"));
                 System.out.println("lawyer in manager group: " + rs.getString("nachname"));
                 System.out.println("lawyer in manager group: " + rs.getString("tcNummer"));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return list;
     }
 
+    public static ObservableList<Manager> getManagers() {
+        Connection connection = connectDB();
+        ObservableList<Manager> list = FXCollections.observableArrayList();
+        try {
+            PreparedStatement ps = connection.prepareStatement("select * from person where login = 2");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Manager(rs.getString("vorname"), rs.getString("nachname"),
+                        rs.getString("branche"), rs.getInt("tcNummer")));
+                System.out.println("manager: " + rs.getString("branche"));
+                System.out.println("manager: " + rs.getString("vorname"));
+                System.out.println("manager: " + rs.getString("nachname"));
+                System.out.println("manager: " + rs.getInt("tcNummer"));
+            }
+        } catch (Exception e) {
+
+        }
+        return list;
+    }
+
+    public static ObservableList<Anwalt> getLawyers() {
+        Connection connection = connectDB();
+        ObservableList<Anwalt> list = FXCollections.observableArrayList();
+        try {
+            PreparedStatement ps = connection.prepareStatement("select vorname, nachname, tcNummer, branche " +
+                    "from person where login = 3");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Anwalt(rs.getString("vorname"), rs.getString("nachname"),
+                        rs.getString("branche"), rs.getInt("tcNummer")));
+                System.out.println("lawyer: " + rs.getString("branche"));
+                System.out.println("lawyer: " + rs.getString("vorname"));
+                System.out.println("lawyer: " + rs.getString("nachname"));
+                System.out.println("lawyer: " + rs.getInt("tcNummer"));
+            }
+        } catch (Exception e) {
+
+        }
+        return list;
+    }
+
+    public static ObservableList<Fall> getCases() {
+        Connection connection = connectDB();
+        ObservableList<Fall> list = FXCollections.observableArrayList();
+        try {
+            PreparedStatement ps = connection.prepareStatement("select * from fall");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Fall(Integer.parseInt(rs.getString("id_fall")), rs.getString("fallArt"),
+                        rs.getString("fallCode"), rs.getString("fallDescription"),
+                        rs.getString("fallState"), rs.getString("caseDate")));
+            }
+        } catch (Exception e) {
+
+        }
+        return list;
+    }
+
+
     public static void assignCase(int tc, int caseID, int index) throws SQLException {
         Connection connection = connectDB();
         String sql;
-        if(index == 3){
+        if (index == 3) {
             sql = "update fall set caseForLawyer = ? where id_fall = ?";
-        }else{
+        } else {
             sql = "update fall set caseForManager = ? where id_fall = ?";
         }
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1,tc);
-        statement.setInt(2,caseID);
+        statement.setInt(1, tc);
+        statement.setInt(2, caseID);
         statement.executeUpdate();
     }
 
-    public static ObservableList<Fall> getDataCaseAssignedForLawyer(int tc, int index){
+    public static void assignLawyer(int tcLawyer, int tcManager) throws SQLException {
+        Connection connection = connectDB();
+        String sql;
+        sql = "update person set managersTC = ? where tcNummer = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, tcManager);
+        statement.setInt(2, tcLawyer);
+        statement.executeUpdate();
+    }
+
+    public static ObservableList<Fall> getDataAssignedCases(int tc, int index) {
         Connection connection = connectDB();
         ObservableList<Fall> list = FXCollections.observableArrayList();
         String sql;
-        if(index == 3){
+        if (index == 3) {
             sql = "select * from fall where caseForLawyer = ?";
-        }else{
-            sql = "update fall set caseForManager = ?";
+        } else {
+            sql = "select * from fall where caseForManager = ?";
         }
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, tc);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                list.add(new Fall(Integer.parseInt(rs.getString("id_fall")),rs.getString("fallArt"),
+            while (rs.next()) {
+                list.add(new Fall(Integer.parseInt(rs.getString("id_fall")), rs.getString("fallArt"),
                         rs.getString("fallCode"), rs.getString("fallDescription"),
                         rs.getString("fallState"), rs.getString("caseDate")));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return list;
@@ -242,15 +309,57 @@ public class Database {
     public static void retainCase(int tc, int caseID, int index) throws SQLException {
         Connection connection = connectDB();
         String sql;
-        if(index == 3){
+        if (index == 3) {
             sql = "update fall set caseForLawyer = -1 where caseForLawyer = ? and id_fall = ?";
-        }else{
+        } else {
             sql = "update fall set caseForManager = ? where caseForManager = ? and id_fall = ?";
         }
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1,tc);
-        statement.setInt(2,caseID);
+        statement.setInt(1, tc);
+        statement.setInt(2, caseID);
         statement.executeUpdate();
+    }
+
+    public static ObservableList<Anwalt> getAssignableLawyers() {
+        Connection connection = connectDB();
+        ObservableList<Anwalt> list = FXCollections.observableArrayList();
+        try {
+            PreparedStatement ps = connection.prepareStatement("select vorname, nachname, tcNummer, branche " +
+                    "from person where managersTC = -1 and login = 3");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Anwalt(rs.getString("vorname"), rs.getString("nachname"),
+                        rs.getString("branche"), rs.getInt("tcNummer")));
+            }
+        } catch (Exception e) {
+
+        }
+        return list;
+    }
+
+    public static ObservableList<Fall> getAssignableCasesInAdmin(int index) {
+        Connection connection = connectDB();
+        ObservableList<Fall> list = FXCollections.observableArrayList();
+        String sql;
+        if (index == 3) {
+            sql = "select * from fall where caseForLawyer = ?";
+        } else {
+            sql = "select * from fall where caseForManager = ?";
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, -1);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(new Fall(Integer.parseInt(rs.getString("id_fall")), rs.getString("fallArt"),
+                        rs.getString("fallCode"), rs.getString("fallDescription"),
+                        rs.getString("fallState"), rs.getString("caseDate")));
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
 }
 
