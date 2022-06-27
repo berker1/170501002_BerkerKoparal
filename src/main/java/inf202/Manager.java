@@ -11,13 +11,11 @@ public class Manager extends Person{
     private int loginManager = 2;
 
     public Manager(String vorname, String nachname, int tcNummer, String email, String kontaktNummer,
-                   String geschlecht, int alter,String branche, String userName, String userPassword,
-                   ArrayList<Integer> fallIds ) {
+                   String geschlecht, int alter, String userName, String userPassword, String branche) {
         super(vorname, nachname, tcNummer, email, kontaktNummer, geschlecht, alter);
         this.branche = branche;
         this.userName = userName;
         this.userPassword = userPassword;
-        this.fallIds = fallIds;
     }
 
     public Manager(String vorname, String nachname, String branche, int tcNummer) {

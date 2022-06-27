@@ -18,7 +18,7 @@ public class Database {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
+        } // #92C7C7
     }
 
     public void connection_db() {
@@ -33,6 +33,7 @@ public class Database {
 
     private static String userInfo;
     private static int userTcInfo;
+    private static  int loginID;
 
     public int login_db(String userName, String password) throws SQLException {
         int login = 0;
@@ -48,6 +49,7 @@ public class Database {
             System.out.println("name:" + rs.getString("vorname"));
             System.out.println("surname:" + rs.getString("nachname"));
             userInfo = rs.getString("vorname") + " " + rs.getString("nachname");
+            loginID = rs.getInt("login");
             System.out.println("username: " + userInfo);
             System.out.println("Login Code " + rs.getInt("login"));
             System.out.println("TC Number: " + rs.getInt("TcNummer"));
@@ -72,8 +74,10 @@ public class Database {
         return userTcInfo;
     }
 
+    public static  int getUserLogin(){return loginID; }
 
-    public void add_case(String caseDate, String caseCode, String caseClass, String caseState, String description) throws SQLException {
+
+    public static void add_case(String caseDate, String caseCode, String caseClass, String caseState, String description) throws SQLException {
         try {
             Connection connection = connectDB();
             PreparedStatement addStatement = connection.prepareStatement("insert into fall (fallArt, fallCode, fallState, caseDate, fallDescription)" +
@@ -90,20 +94,87 @@ public class Database {
         }
     }
 
-    /*
-    public static int getUserTC() throws SQLException {
-        int userTC = 0;
-        Connection connection = connectDB();
-        PreparedStatement statement = connection.prepareStatement("select * from user");
-        ResultSet rs = statement.executeQuery();
-        while (rs.next()) {
-            System.out.println("get TC: " + rs.getInt("userTC"));
-            userTC = rs.getInt("userTC");
+    public static void edit_case(String caseDate, String caseCode, String caseClass, String caseState, String description,
+                                    int caseID) throws SQLException {
+        try {
+            Connection connection = connectDB();
+            String sql = "update fall set fallArt = ? , fallCode = ?, fallState = ?, caseDate = ?, fallDescription = ?" +
+                    "where id_fall = ?";
+            PreparedStatement addStatement = connection.prepareStatement(sql);
+            addStatement.setString(1, caseClass);
+            addStatement.setString(2, caseCode);
+            addStatement.setString(3, caseState);
+            addStatement.setString(4, caseDate);
+            addStatement.setString(5, description);
+            addStatement.setInt(6,caseID);
+            addStatement.executeUpdate();
+            System.out.println("Case edited");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return userTC;
     }
 
-     */
+    public static void editPersonLawyer(Anwalt lawyer) throws SQLException {
+        try {
+            Connection connection = connectDB();
+            String sql = "update person set vorname = ? , nachname = ?, tcNummer = ?, email = ?, kontaktNummer = ?, geschlecht = ?," +
+                    "alterAnwalt = ?, userName = ?, userPassword = ?, branche = ?" +
+                    "where tcNummer = ?";
+            PreparedStatement addStatement = connection.prepareStatement(sql);
+            addStatement.setString(1, lawyer.getVorname());
+            addStatement.setString(2, lawyer.getNachname());
+            addStatement.setInt(3, lawyer.getTcNummer());
+            addStatement.setString(4, lawyer.getEmail());
+            addStatement.setString(5, lawyer.getKontaktNummer());
+            addStatement.setString(6,lawyer.getGeschlecht());
+            addStatement.setInt(7,lawyer.getAlter());
+            addStatement.setString(8,lawyer.getUserName());
+            addStatement.setString(9,lawyer.getUserPassword());
+            addStatement.setInt(10, lawyer.getTcNummer());
+            addStatement.executeUpdate();
+            System.out.println("Lawyer edited");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editPersonManager(Manager manager) throws SQLException {
+        try {
+            Connection connection = connectDB();
+            String sql = "update person set vorname = ? , nachname = ?, tcNummer = ?, email = ?, kontaktNummer = ?, geschlecht = ?," +
+                    "alterAnwalt = ?, userName = ?, userPassword = ?, branche = ?" +
+                    "where tcNummer = ?";
+            PreparedStatement addStatement = connection.prepareStatement(sql);
+            addStatement.setString(1, manager.getVorname());
+            addStatement.setString(2, manager.getNachname());
+            addStatement.setInt(3, manager.getTcNummer());
+            addStatement.setString(4, manager.getEmail());
+            addStatement.setString(5, manager.getKontaktNummer());
+            addStatement.setString(6,manager.getGeschlecht());
+            addStatement.setInt(7,manager.getAlter());
+            addStatement.setString(8,manager.getUserName());
+            addStatement.setString(9,manager.getUserPassword());
+            addStatement.setInt(10, manager.getTcNummer());
+            addStatement.executeUpdate();
+            System.out.println("Manager edited");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deletePerson(int tc) throws SQLException {
+        Connection connection = connectDB();
+        PreparedStatement statement = connection.prepareStatement("delete from person where tcNummer = ?");
+        statement.setInt(1, tc);
+        statement.executeUpdate();
+    }
+
+    public static void deleteCase(int caseID) throws SQLException {
+        Connection connection = connectDB();
+        PreparedStatement statement = connection.prepareStatement("delete from fall where id_fall = ?");
+        statement.setInt(1, caseID);
+        statement.executeUpdate();
+    }
 
     public static Fall show_case_details(int value) throws SQLException {
         Fall selectedFall = null;
@@ -118,6 +189,12 @@ public class Database {
                 selectedFall = new Fall(Integer.parseInt(rs.getString("id_fall")), rs.getString("fallArt"),
                         rs.getString("fallCode"), rs.getString("fallDescription"),
                         rs.getString("fallState"), rs.getString("caseDate"));
+                System.out.println(rs.getString("id_fall"));
+                System.out.println(rs.getString("fallArt"));
+                System.out.println(rs.getString("fallState"));
+                System.out.println(rs.getString("caseDate"));
+                System.out.println(rs.getString("fallDescription"));
+                System.out.println(rs.getString("fallCode"));
             }
             return selectedFall;
         } catch (Exception e) {
@@ -282,7 +359,7 @@ public class Database {
         statement.executeUpdate();
     }
 
-    public static ObservableList<Fall> getDataAssignedCases(int tc, int index) {
+    public static ObservableList<Fall> getDataAssignedCases(int tc, int index) { // on click
         Connection connection = connectDB();
         ObservableList<Fall> list = FXCollections.observableArrayList();
         String sql;
@@ -360,6 +437,25 @@ public class Database {
         } catch (Exception e) {
         }
         return list;
+    }
+
+    public static Anwalt getLawyerDetails(int tc) {
+        Connection connection = connectDB();
+        Anwalt lawyer = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("select * from person where tcNummer = ?");
+            statement.setInt(1,tc);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                lawyer =new Anwalt(rs.getString("vorname"), rs.getString("nachname"),
+                         rs.getInt("tcNummer"), rs.getString("email"), rs.getString("kontaktnummer"),
+                        rs.getString("geschlecht"),rs.getInt("alterAnwalt"), rs.getString("userName"),
+                        rs.getString("userPassword"), rs.getString("branche"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lawyer;
     }
 }
 

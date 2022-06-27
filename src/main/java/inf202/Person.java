@@ -73,6 +73,20 @@ public class Person {
         this.alter = alter;
     }
 
+    public static boolean checkTC(String tc){
+        boolean isTcCorrect = true;
+        if(tc.length() != 11){
+            isTcCorrect = false;
+        }else{
+            char[] chars = tc.toCharArray();
+            for(char c : chars){
+                if(!Character.isDigit(c)){
+                    isTcCorrect = false;
+                }
+            }
+        }
+        return isTcCorrect;
+    }
 
     public Person(String vorname, String nachname, int tcNummer,
                   String email, String kontaktNummer, String geschlecht, int alter

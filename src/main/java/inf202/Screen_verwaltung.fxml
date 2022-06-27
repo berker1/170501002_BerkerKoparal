@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="637.0" prefWidth="962.0" style="-fx-background-color: #92C7C7;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="inf202.Controller_verwaltung">
+<AnchorPane prefHeight="681.0" prefWidth="962.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="inf202.Controller_verwaltung">
    <children>
       <TableView id="tableManagers" fx:id="tableManagers" layoutX="272.0" layoutY="27.0" prefHeight="278.0" prefWidth="302.0">
         <columns>
@@ -31,7 +32,7 @@
                </columns></TableColumn>
          </columns>
       </TableView>
-      <TableView id="tableCase" fx:id="tableCase" layoutX="272.0" layoutY="336.0" prefHeight="311.0" prefWidth="170.0">
+      <TableView id="tableCase" fx:id="tableCase" layoutX="272.0" layoutY="336.0" prefHeight="335.0" prefWidth="170.0">
          <columns>
             <TableColumn prefWidth="198.0" text="Cases">
                <columns>
@@ -41,43 +42,74 @@
          </columns>
       </TableView>
       <Text layoutX="517.0" layoutY="351.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case Date:" />
-      <TextField id="tf_case_date" fx:id="tf_case_date_m" editable="false" layoutX="600.0" layoutY="334.0" prefHeight="26.0" prefWidth="107.0" text="#" />
+      <TextField id="tf_case_date2" fx:id="tf_case_date2" editable="false" layoutX="600.0" layoutY="334.0" prefHeight="26.0" prefWidth="107.0" text="#" />
+      <DatePicker id="dp_case_date" fx:id="dp_case_date" layoutX="591.0" layoutY="334.0" prefHeight="26.0" prefWidth="123.0" visible="false" />
       <Text layoutX="735.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case class:" />
-      <TextField id="tf_case_class" fx:id="tf_case_class_m" editable="false" layoutX="815.0" layoutY="334.0" prefHeight="26.0" prefWidth="107.0" text="#" />
+      <TextField id="tf_case_class" fx:id="tf_case_class" editable="false" layoutX="815.0" layoutY="334.0" prefHeight="26.0" prefWidth="107.0" text="#" />
       <Text layoutX="515.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case Code:" />
-      <TextField id="tf_case_code" fx:id="tf_case_code_m" editable="false" layoutX="600.0" layoutY="382.0" prefHeight="26.0" prefWidth="107.0" text="#" />
+      <TextField id="tf_case_code" fx:id="tf_case_code" editable="false" layoutX="600.0" layoutY="382.0" prefHeight="26.0" prefWidth="107.0" text="#" />
       <Text layoutX="734.0" layoutY="399.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case State:" />
-      <TextField id="tf_case_state" fx:id="tf_case_state_m" editable="false" layoutX="815.0" layoutY="381.0" prefHeight="26.0" prefWidth="107.0" text="#" />
+      <TextField id="tf_case_state" fx:id="tf_case_state" editable="false" layoutX="815.0" layoutY="381.0" prefHeight="26.0" prefWidth="107.0" text="#" />
       <Text layoutX="515.0" layoutY="432.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case Description:" />
-      <TextArea id="ta_case_description_m" fx:id="ta_case_description_m" layoutX="494.0" layoutY="447.0" prefHeight="200.0" prefWidth="426.0" text="#" />
-      <AnchorPane prefHeight="666.0" prefWidth="236.0" style="-fx-background-color: #ADD8E6;">
+      <TextArea id="ta_case_description" fx:id="ta_case_description" editable="false" layoutX="494.0" layoutY="447.0" prefHeight="205.0" prefWidth="437.0" text="#" />
+      <AnchorPane prefHeight="681.0" prefWidth="236.0" style="-fx-background-color: #C9DFEC;">
          <children>
-            <Button id="btn_add_lawyer" fx:id="btn_add_lawyer" layoutX="12.0" layoutY="234.0" mnemonicParsing="false" onAction="#addLawyer" prefHeight="25.0" prefWidth="107.0" text="Add Lawyer" />
-            <Button id="btn_add_case" fx:id="btn_addCase" layoutX="12.0" layoutY="376.0" mnemonicParsing="false" onAction="#addCase" prefHeight="25.0" prefWidth="107.0" text="Add Case" />
-            <Button id="btn_assaign_case_lawyer" fx:id="btn_assaign_case_lawyer" layoutX="120.0" layoutY="453.0" mnemonicParsing="false" onAction="#assignCaseLawyer" prefHeight="40.0" prefWidth="107.0" text="Assign Case &#10;to lawyer" textAlignment="CENTER" textOverrun="CLIP" />
-            <TextField id="tf_user" fx:id="tf_user" alignment="CENTER" editable="false" layoutX="32.0" layoutY="24.0" text="Verwaltungspersonal">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
-            <Button fx:id="btn_logout" layoutX="154.0" layoutY="627.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
+            <Button id="btn_add_lawyer" fx:id="btn_add_lawyer" layoutX="12.0" layoutY="266.0" mnemonicParsing="false" onAction="#addLawyer" prefHeight="25.0" prefWidth="107.0" text="Add Lawyer" />
+            <Button id="btn_add_case" fx:id="btn_addCase" layoutX="120.0" layoutY="383.0" mnemonicParsing="false" onAction="#addCase" prefHeight="25.0" prefWidth="107.0" text="Add New Case" />
+            <Button id="btn_assaign_case_lawyer" fx:id="btn_assaign_case_lawyer" layoutX="120.0" layoutY="508.0" mnemonicParsing="false" onAction="#assignCaseLawyer" prefHeight="25.0" prefWidth="107.0" text="to Lawyer" textAlignment="CENTER" textOverrun="CLIP" />
+            <Button fx:id="btn_logout" layoutX="161.0" layoutY="635.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
             <Button id="btn_manager_details" fx:id="btn_manager_details" layoutX="120.0" layoutY="107.0" mnemonicParsing="false" onAction="#showManagerDetails" prefHeight="25.0" prefWidth="107.0" text="Manager Details" />
-            <Button id="btn_lawyer_details" fx:id="btn_lawyer_details" layoutX="120.0" layoutY="200.0" mnemonicParsing="false" onAction="#showLawyerDetails" prefHeight="25.0" prefWidth="107.0" text="Lawyer Details" />
-            <Button id="btn_assigned_cases_manager" fx:id="btn_assigned_cases" layoutX="12.0" layoutY="500.0" mnemonicParsing="false" onAction="#showAssignedCasesManager" prefHeight="40.0" prefWidth="107.0" text="Assigned Cases&#10;for Manager" textAlignment="CENTER" />
-            <Button id="btn_assigned_cases_lawyer" fx:id="btn_assigned_cases2" layoutX="120.0" layoutY="500.0" mnemonicParsing="false" onAction="#showAssignedCasesLawyer" prefHeight="40.0" prefWidth="107.0" text="Assigned Cases&#10;for Lawyer" textAlignment="CENTER" />
-            <Button id="btn_add_manager" fx:id="btn_add_manager" layoutX="12.0" layoutY="140.0" mnemonicParsing="false" onAction="#addManager" prefHeight="25.0" prefWidth="107.0" text="Add Manager" />
+            <Button id="btn_lawyer_details" fx:id="btn_lawyer_details" layoutX="120.0" layoutY="231.0" mnemonicParsing="false" onAction="#showLawyerDetails" prefHeight="25.0" prefWidth="107.0" text="Lawyer Details" />
+            <Button id="btn_add_manager" fx:id="btn_add_manager" layoutX="12.0" layoutY="141.0" mnemonicParsing="false" onAction="#addManager" prefHeight="25.0" prefWidth="107.0" text="Add Manager" />
             <Button id="btn_all_managers" fx:id="btn_all_managers" layoutX="12.0" layoutY="107.0" mnemonicParsing="false" onAction="#showAllManagers" prefHeight="25.0" prefWidth="107.0" text="All managers" />
-            <Button id="btn_retain_case_manager" fx:id="btn_retain_case_manager" layoutX="12.0" layoutY="546.0" mnemonicParsing="false" onAction="#retainCaseManager" prefHeight="40.0" prefWidth="107.0" text="Retain Case&#10;from manager" textAlignment="CENTER" />
-            <Button id="btn_all_lawyers" fx:id="btn_all_lawyers" layoutX="12.0" layoutY="200.0" mnemonicParsing="false" onAction="#showAllLawyers" prefHeight="25.0" prefWidth="107.0" text="All Lawyers" />
-            <Button id="btn_all_cases" fx:id="btn_all_cases" layoutX="12.0" layoutY="344.0" mnemonicParsing="false" onAction="#ShowAllCases" prefHeight="25.0" prefWidth="107.0" text="All Cases" />
-            <Button id="btn_assignable_cases_manager" fx:id="btn_assignable_cases" layoutX="12.0" layoutY="407.0" mnemonicParsing="false" onAction="#showAssignableCasesForManager" prefHeight="40.0" prefWidth="107.0" text="assignable cases&#10;for Manager" textAlignment="CENTER" />
-            <Button id="btn_assignable_lawyers" fx:id="btn_assignable_lawyers" layoutX="12.0" layoutY="265.0" mnemonicParsing="false" onAction="#showAssignableLawyers" prefHeight="40.0" prefWidth="107.0" text="Assignable &#10;Lawyers" textAlignment="CENTER" />
-            <Button id="btn_assign_lawyer" fx:id="btn_assign_lawyer" layoutX="120.0" layoutY="273.0" mnemonicParsing="false" onAction="#assignLawyerToManager" prefHeight="25.0" prefWidth="107.0" text="Assign Lawyer" />
-            <Button id="btn_assaign_case_manager" layoutX="12.0" layoutY="453.0" mnemonicParsing="false" onAction="#assignCaseManager" prefHeight="40.0" prefWidth="107.0" text="Assign Case &#10;to manager" textAlignment="CENTER" />
-            <Button id="btn_retain_case_lawyer" fx:id="btn_assaign_case_manager" layoutX="120.0" layoutY="546.0" mnemonicParsing="false" onAction="#retainCaseLawyer" prefHeight="40.0" prefWidth="107.0" text="Retain Case&#10;from lawyer" textAlignment="CENTER" />
-            <Button id="btn_case_details" fx:id="btn_case_details" layoutX="120.0" layoutY="344.0" mnemonicParsing="false" onAction="#showCaseDetails" prefHeight="25.0" prefWidth="107.0" text="Case Details" />
-            <Button id="btn_assignable_cases_lawyer" fx:id="btn_assignable_cases1" layoutX="120.0" layoutY="407.0" mnemonicParsing="false" onAction="#showAssignableCasesForLawyer" prefHeight="40.0" prefWidth="107.0" text="assignable cases&#10;for lawyer" textAlignment="CENTER" />
-            <Button id="btn_save_case_changes" fx:id="btn_save_case_changes" layoutX="120.0" layoutY="376.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="107.0" text="Save Changes" />
+            <Button id="btn_retain_case_manager" fx:id="btn_retain_case_manager" layoutX="12.0" layoutY="552.0" mnemonicParsing="false" onAction="#retainCaseManager" prefHeight="25.0" prefWidth="107.0" text="from Manager" textAlignment="CENTER" />
+            <Button id="btn_all_lawyers" fx:id="btn_all_lawyers" layoutX="12.0" layoutY="231.0" mnemonicParsing="false" onAction="#showAllLawyers" prefHeight="25.0" prefWidth="107.0" text="All Lawyers" />
+            <Button id="btn_all_cases" fx:id="btn_all_cases" layoutX="12.0" layoutY="383.0" mnemonicParsing="false" onAction="#ShowAllCases" prefHeight="25.0" prefWidth="107.0" text="All Cases" />
+            <Button id="btn_assignable_cases_manager" fx:id="btn_assignable_cases" layoutX="12.0" layoutY="466.0" mnemonicParsing="false" onAction="#showAssignableCasesForManager" prefHeight="25.0" prefWidth="107.0" text="for Manager" textAlignment="CENTER" />
+            <Button id="btn_assignable_lawyers" fx:id="btn_assignable_lawyers" layoutX="12.0" layoutY="299.0" mnemonicParsing="false" onAction="#showAssignableLawyers" prefHeight="25.0" prefWidth="107.0" text="Assignables" textAlignment="CENTER" />
+            <Button id="btn_assign_lawyer" fx:id="btn_assign_lawyer" layoutX="120.0" layoutY="299.0" mnemonicParsing="false" onAction="#assignLawyerToManager" prefHeight="25.0" prefWidth="107.0" text="Assign Lawyer" />
+            <Button id="btn_assaign_case_manager" layoutX="12.0" layoutY="508.0" mnemonicParsing="false" onAction="#assignCaseManager" prefHeight="25.0" prefWidth="107.0" text="to Manager" textAlignment="CENTER" />
+            <Button id="btn_retain_case_lawyer" fx:id="btn_assaign_case_manager" layoutX="120.0" layoutY="552.0" mnemonicParsing="false" onAction="#retainCaseLawyer" prefHeight="25.0" prefWidth="107.0" text="from Lawyer" textAlignment="CENTER" />
+            <Button id="btn_case_edit" fx:id="btn_case_edit" layoutX="12.0" layoutY="418.0" mnemonicParsing="false" onAction="#caseEdit" prefHeight="25.0" prefWidth="107.0" text="Edit Case" />
+            <Button id="btn_assignable_cases_lawyer" fx:id="btn_assignable_cases1" layoutX="120.0" layoutY="466.0" mnemonicParsing="false" onAction="#showAssignableCasesForLawyer" prefHeight="25.0" prefWidth="107.0" text="for lawyer" textAlignment="CENTER" />
+            <Button id="btn_delete_manager" fx:id="btn_delete_manager" layoutX="120.0" layoutY="141.0" mnemonicParsing="false" onAction="#deleteManager" prefHeight="25.0" prefWidth="107.0" text="Delete Manager" />
+            <Button id="btn_delete_lawyer" fx:id="btn_delete_lawyer" layoutX="120.0" layoutY="266.0" mnemonicParsing="false" onAction="#deleteLawyer" prefHeight="25.0" prefWidth="107.0" text="Delete Lawyer" />
+            <Button id="btn_delete_case" fx:id="btn_delete_case" layoutX="120.0" layoutY="418.0" mnemonicParsing="false" onAction="#deleteCase" prefHeight="25.0" prefWidth="107.0" text="Delete Case" />
+            <Text id="txt_user" fx:id="txt_user" fill="#155981" layoutX="11.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="user" textAlignment="CENTER" wrappingWidth="214.20003662109377">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="60.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assignable Cases" textAlignment="CENTER" wrappingWidth="116.13671875">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text layoutX="87.0" layoutY="504.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assign Case ">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text layoutX="88.0" layoutY="548.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Retain Case">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text layoutX="12.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Case Operations" wrappingWidth="107.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text layoutX="15.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Operations">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <Text layoutX="12.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lawyer Operations" wrappingWidth="107.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </children>
