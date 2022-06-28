@@ -48,7 +48,7 @@
             <Button id="btn_all_cases" fx:id="btn_all_cases" layoutX="280.0" layoutY="6.0" mnemonicParsing="false" onAction="#showAllCases" prefHeight="26.0" prefWidth="98.0" text="All Cases" />
             <Button id="btn_assign_case" fx:id="btn_assign_case" layoutX="502.0" layoutY="6.0" mnemonicParsing="false" onAction="#assignCase" prefHeight="26.0" prefWidth="107.0" text="Assign Case" />
              <Button id="btn_assignable_cases" fx:id="btn_assignable_cases" layoutX="389.0" layoutY="6.0" mnemonicParsing="false" onAction="#showAssignableCases" prefHeight="26.0" prefWidth="107.0" text="Assignable Cases" />
-            <Button id="btn_retain_case" fx:id="btn_retain_case" layoutX="389.0" layoutY="35.0" mnemonicParsing="false" onAction="#retainCase" prefHeight="26.0" prefWidth="107.0" text="Retain Case" />
+            <Button id="btn_retain_case" fx:id="btn_retain_case" layoutX="389.0" layoutY="35.0" mnemonicParsing="false" onAction="#retainCase" prefHeight="26.0" prefWidth="107.0" text="Retrieve Case" />
             <Button fx:id="btn_logout" layoutX="666.0" layoutY="22.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="91.0" text="Log out" />
             <Button fx:id="btnManagerToMyPage" layoutX="14.0" layoutY="19.0" mnemonicParsing="false" onAction="#toLawyerPage" prefHeight="26.0" prefWidth="83.0" text="To My Page" />
             <Button id="btn_lawyer_details" fx:id="btn_lawyer_detalis" layoutX="127.0" layoutY="19.0" mnemonicParsing="false" onAction="#showLawyerDetails" prefHeight="26.0" prefWidth="107.0" text="Lawyer Details" />

@@ -4,13 +4,13 @@ public class Person {
 
     private String vorname;
     private String nachname;
-    private int tcNummer;
+    private String tcNummer;
     private String email;
     private String kontaktNummer;
     private String geschlecht;
     private int alter;
 
-    public Person(String vorname, String nachname, int tcNummer) {
+    public Person(String vorname, String nachname, String tcNummer) {
         this.vorname = vorname;
         this.nachname = nachname;
         this.tcNummer = tcNummer;
@@ -33,11 +33,11 @@ public class Person {
         this.nachname = nachname;
     }
 
-    public int getTcNummer() {
+    public String getTcNummer() {
         return tcNummer;
     }
 
-    public void setTcNummer(int tcNummer) {
+    public void setTcNummer(String tcNummer) {
         this.tcNummer = tcNummer;
     }
 
@@ -75,20 +75,26 @@ public class Person {
 
     public static boolean checkTC(String tc){
         boolean isTcCorrect = true;
+        System.out.println("tc : " + tc);
         if(tc.length() != 11){
             isTcCorrect = false;
+            System.out.println("11 haneli değil");
         }else{
+            System.out.println("11 haneli ");
             char[] chars = tc.toCharArray();
             for(char c : chars){
                 if(!Character.isDigit(c)){
                     isTcCorrect = false;
+                    System.out.println("11 haneli ama sayı hariç şey var");
+                    break;
                 }
             }
         }
+        System.out.println("tc korrekt ? " + isTcCorrect);
         return isTcCorrect;
     }
 
-    public Person(String vorname, String nachname, int tcNummer,
+    public Person(String vorname, String nachname, String tcNummer,
                   String email, String kontaktNummer, String geschlecht, int alter
                   ) {
         this.vorname = vorname;

@@ -41,7 +41,7 @@ public class Controller_verwaltung implements Initializable {
     @FXML
     private Button btn_assignable_cases, btn_assaign_case_manager, btn_assaign_case_lawyer, btn_retain_case_manager;
     @FXML
-    private Button btn_retain_case_lawyer, btn_save_case_changes, btn_case_edit, btn_delete_manager, btn_delete_lawyer;
+    private Button btn_retain_case_lawyer, btn_save_case_changes, btn_case_edit, btn_delete_manager, btn_delete_lawyer, btn_retain_lawyer;
     @FXML
     private TextField tf_case_date2, tf_case_class, tf_case_code, tf_case_state;
     @FXML
@@ -115,7 +115,7 @@ public class Controller_verwaltung implements Initializable {
     }
 
     private void clickTableManager(){
-        int tc = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
         int index = 2;
         listC= Database.getDataAssignedCases(tc, index);
         tableCase.setItems(listC);
@@ -128,7 +128,7 @@ public class Controller_verwaltung implements Initializable {
     }
 
     private void clickTableLawyer(){
-        int tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
         int index = 3;
         listC= Database.getDataAssignedCases(tc, index);
         tableCase.setItems(listC);
@@ -311,18 +311,18 @@ public class Controller_verwaltung implements Initializable {
     }
 
     public void deleteManager(ActionEvent e) throws SQLException {
-        int tc = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
         Database.deletePerson(tc);
         getAllManagers();
     }
 
     public void deleteLawyer(ActionEvent e) throws SQLException {
-        int tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
         Database.deletePerson(tc);
         getAllLawyers();
     }
 
-    private void toPersonPage(int tc, int index, String name) throws IOException {
+    private void toPersonPage(String tc, int index, String name) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Screen_person.fxml"));
         root = loader.load();
         Controller_person controller_person = loader.getController();
@@ -333,23 +333,23 @@ public class Controller_verwaltung implements Initializable {
     }
 
     public void showManagerDetails(ActionEvent e) throws IOException {
-        int tc = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
         String name = "Manager Details";
-        toPersonPage(tc, -1, name);
+        toPersonPage(tc, 2, name);
     }
 
     public void showLawyerDetails(ActionEvent e) throws IOException {
-        int tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
         String name = "Lawyer Details";
-        toPersonPage(tc,-1, name);
+        toPersonPage(tc,3, name);
     }
 
     public void addManager(ActionEvent e) throws IOException {
-        toPersonPage(-1,2, "");
+        toPersonPage("-1",2, "");
     }
 
     public void addLawyer(ActionEvent e) throws IOException {
-        toPersonPage(-1,3, "");
+        toPersonPage("-1",3, "");
     }
 
     public void showAllManagers(ActionEvent e) { //gerek yok gibi
@@ -373,37 +373,48 @@ public class Controller_verwaltung implements Initializable {
     }
 
     public void assignLawyerToManager(ActionEvent e) throws SQLException {
-        int tcLawyer = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
-        int tcManager = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tcLawyer = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tcManager = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
         Database.assignLawyer(tcLawyer, tcManager);
+        listL = Database.getLawyersForManager(tcManager);
+        tableLawyers.setItems(listL);
+    }
+
+    public void retainLawyer(ActionEvent e) throws SQLException {
+        String tcLawyer = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tcManager = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        Database.retainLawyer(tcLawyer);
+        clickTableManager();
+        listL = Database.getLawyersForManager(tcManager);
+        tableLawyers.setItems(listL);
     }
 
     public void assignCaseManager(ActionEvent e) throws SQLException {
-        int tc = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
         int caseID = tableCase.getItems().get(tableCase.getSelectionModel().getSelectedIndex()).getFallId();
-        int index = 3;
+        int index = 2;
         Database.assignCase(tc, caseID, index);
         getAssignableCases(2);
     }
 
     public void assignCaseLawyer(ActionEvent e) throws SQLException {
-        int tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
         int caseID = tableCase.getItems().get(tableCase.getSelectionModel().getSelectedIndex()).getFallId();
-        int index = 2;
+        int index = 3;
         Database.assignCase(tc, caseID, index);
         getAssignableCases(3);
-
+        getAssignableCases(2);
     }
 
     public void retainCaseManager(ActionEvent e) throws SQLException {
-        int tc = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableManagers.getItems().get(tableManagers.getSelectionModel().getSelectedIndex()).getTcNummer();
         int caseID = tableCase.getItems().get(tableCase.getSelectionModel().getSelectedIndex()).getFallId();
-        int index = 3;
+        int index = 2;
         Database.retainCase(tc, caseID, index);
     }
 
     public void retainCaseLawyer(ActionEvent e) throws SQLException {
-        int tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
         int caseID = tableCase.getItems().get(tableCase.getSelectionModel().getSelectedIndex()).getFallId();
         int index = 3;
         Database.retainCase(tc, caseID, index);

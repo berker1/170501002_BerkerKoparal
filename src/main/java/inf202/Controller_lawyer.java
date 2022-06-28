@@ -104,13 +104,13 @@ public class Controller_lawyer implements Initializable {
     }
 
     public void showLawyerDetails(ActionEvent e) throws IOException {
-        int tc = Database.getUserTC();
+        String tc = Database.getUserTC();
         String name = "Lawyer Details";
-        this.toPersonPage(tc, -1, name);
+        this.toPersonPage(tc, 3, name);
     }
 
 
-    private void toPersonPage(int tc, int index, String name) throws IOException {
+    private void toPersonPage(String tc, int index, String name) throws IOException {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("Screen_person.fxml"));
         root = loader.load();
         Controller_person controller_person = loader.getController();

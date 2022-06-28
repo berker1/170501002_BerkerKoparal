@@ -10,7 +10,7 @@ public class Manager extends Person{
     private ArrayList<Integer> fallIds;
     private int loginManager = 2;
 
-    public Manager(String vorname, String nachname, int tcNummer, String email, String kontaktNummer,
+    public Manager(String vorname, String nachname, String tcNummer, String email, String kontaktNummer,
                    String geschlecht, int alter, String userName, String userPassword, String branche) {
         super(vorname, nachname, tcNummer, email, kontaktNummer, geschlecht, alter);
         this.branche = branche;
@@ -18,7 +18,7 @@ public class Manager extends Person{
         this.userPassword = userPassword;
     }
 
-    public Manager(String vorname, String nachname, String branche, int tcNummer) {
+    public Manager(String vorname, String nachname, String branche, String tcNummer) {
         super(vorname, nachname, tcNummer);
         this.branche = branche;
     }

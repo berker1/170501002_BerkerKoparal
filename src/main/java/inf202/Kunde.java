@@ -6,7 +6,7 @@ public class Kunde extends Person{
 
     private ArrayList<Integer> fallIds;
 
-    public Kunde(String vorname, String nachname, int tcNummer, String email, String kontaktNummer, String geschlecht,
+    public Kunde(String vorname, String nachname, String tcNummer, String email, String kontaktNummer, String geschlecht,
                  int alter, ArrayList<Integer> fallIds) {
         super(vorname, nachname, tcNummer, email, kontaktNummer, geschlecht, alter);
         this.fallIds = fallIds;

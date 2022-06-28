@@ -9,13 +9,13 @@
 <AnchorPane prefHeight="348.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="inf202.Controller_person">
    <children>
       <TextField id="tf_personProfession" fx:id="tf_personProfession" layoutX="100.0" layoutY="157.0" />
-      <TextField id="tf_personAge" fx:id="tf_personAge" layoutX="370.0" layoutY="155.0" />
+      <TextField id="tf_personAge" fx:id="tf_personAge" layoutX="370.0" layoutY="155.0" text="-1" />
       <TextField id="tf_personSurname" fx:id="tf_personSurname" layoutX="370.0" layoutY="84.0" />
       <TextField id="tf_personMail" fx:id="tf_personMail" layoutX="100.0" layoutY="195.0" />
       <TextField id="tf_personSex" fx:id="tf_personSex" layoutX="370.0" layoutY="120.0" />
       <TextField id="tf_personTC" fx:id="tf_personTC" layoutX="100.0" layoutY="121.0" />
       <TextField id="tf_personUserPass" fx:id="tf_personUserPass" layoutX="370.0" layoutY="235.0" />
-      <TextField id="tf_personUserName" fx:id="tf_personUserName" editable="false" layoutX="100.0" layoutY="235.0" />
+      <TextField id="tf_personUserName" fx:id="tf_personUserName" editable="false" layoutX="100.0" layoutY="235.0" text="TC NUMMER" />
       <TextField id="tf_personName" fx:id="tf_personName" layoutX="100.0" layoutY="84.0" />
       <TextField id="tf_personContact" fx:id="tf_personContact" layoutX="370.0" layoutY="194.0" />
       <Text layoutX="30.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" wrappingWidth="50.9366455078125" />

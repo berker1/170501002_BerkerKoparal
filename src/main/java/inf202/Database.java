@@ -32,7 +32,7 @@ public class Database {
     }
 
     private static String userInfo;
-    private static int userTcInfo;
+    private static String userTcInfo;
     private static  int loginID;
 
     public int login_db(String userName, String password) throws SQLException {
@@ -52,13 +52,13 @@ public class Database {
             loginID = rs.getInt("login");
             System.out.println("username: " + userInfo);
             System.out.println("Login Code " + rs.getInt("login"));
-            System.out.println("TC Number: " + rs.getInt("TcNummer"));
-            userTcInfo =  rs.getInt("TcNummer");
+            System.out.println("TC Number: " + rs.getString("tcNummer"));
+            userTcInfo =  rs.getString("tcNummer");
             System.out.println("User Name " + rs.getString("userName"));
             login = rs.getInt("login");
             //PreparedStatement statement = connection.prepareStatement("update user set userTC = ? where userTC = 333");
             PreparedStatement statement = connection.prepareStatement("update user set userTC = ? where userName = ?");
-            statement.setInt(1, rs.getInt("TcNummer"));
+            statement.setString(1, rs.getString("tcNummer"));
             statement.setString(2, "currentUser");
             statement.executeUpdate();
             //getUserTC();
@@ -70,7 +70,7 @@ public class Database {
         return userInfo;
     }
 
-    public static int getUserTC(){
+    public static String getUserTC(){
         return userTcInfo;
     }
 
@@ -114,7 +114,7 @@ public class Database {
         }
     }
 
-    public static void editPersonLawyer(Anwalt lawyer) throws SQLException {
+    public static void editPersonLawyer(Anwalt lawyer, String oldTC) throws SQLException {
         try {
             Connection connection = connectDB();
             String sql = "update person set vorname = ? , nachname = ?, tcNummer = ?, email = ?, kontaktNummer = ?, geschlecht = ?," +
@@ -123,14 +123,15 @@ public class Database {
             PreparedStatement addStatement = connection.prepareStatement(sql);
             addStatement.setString(1, lawyer.getVorname());
             addStatement.setString(2, lawyer.getNachname());
-            addStatement.setInt(3, lawyer.getTcNummer());
+            addStatement.setString(3, lawyer.getTcNummer());
             addStatement.setString(4, lawyer.getEmail());
             addStatement.setString(5, lawyer.getKontaktNummer());
             addStatement.setString(6,lawyer.getGeschlecht());
             addStatement.setInt(7,lawyer.getAlter());
             addStatement.setString(8,lawyer.getUserName());
             addStatement.setString(9,lawyer.getUserPassword());
-            addStatement.setInt(10, lawyer.getTcNummer());
+            addStatement.setString(10,lawyer.getBranche());
+            addStatement.setString(11, oldTC);
             addStatement.executeUpdate();
             System.out.println("Lawyer edited");
         } catch (Exception e) {
@@ -138,7 +139,9 @@ public class Database {
         }
     }
 
-    public static void editPersonManager(Manager manager) throws SQLException {
+    public static void editPersonManager(Manager manager, String oldTC) throws SQLException {
+        System.out.println("edit person geldi");
+        System.out.println("manager" +manager.getTcNummer());
         try {
             Connection connection = connectDB();
             String sql = "update person set vorname = ? , nachname = ?, tcNummer = ?, email = ?, kontaktNummer = ?, geschlecht = ?," +
@@ -147,14 +150,15 @@ public class Database {
             PreparedStatement addStatement = connection.prepareStatement(sql);
             addStatement.setString(1, manager.getVorname());
             addStatement.setString(2, manager.getNachname());
-            addStatement.setInt(3, manager.getTcNummer());
+            addStatement.setString(3, manager.getTcNummer());
             addStatement.setString(4, manager.getEmail());
             addStatement.setString(5, manager.getKontaktNummer());
             addStatement.setString(6,manager.getGeschlecht());
             addStatement.setInt(7,manager.getAlter());
             addStatement.setString(8,manager.getUserName());
             addStatement.setString(9,manager.getUserPassword());
-            addStatement.setInt(10, manager.getTcNummer());
+            addStatement.setString(10,manager.getBranche());
+            addStatement.setString(11, oldTC);
             addStatement.executeUpdate();
             System.out.println("Manager edited");
         } catch (Exception e) {
@@ -162,11 +166,60 @@ public class Database {
         }
     }
 
-    public static void deletePerson(int tc) throws SQLException {
+    public static void saveNewLawyer(Anwalt anwalt) throws SQLException {
+        String sql = "insert into person (vorname, nachname, tcNummer, email, kontaktNummer, geschlecht, " +
+                "alterAnwalt, userName, userPassword, branche, login, managersTC) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+        Connection connection = connectDB();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1,anwalt.getVorname());
+        statement.setString(2,anwalt.getNachname());
+        statement.setString(3,anwalt.getTcNummer());
+        statement.setString(4,anwalt.getEmail());
+        statement.setString(5,anwalt.getKontaktNummer());
+        statement.setString(6,anwalt.getGeschlecht());
+        statement.setInt(7,anwalt.getAlter());
+        statement.setString(8,anwalt.getTcNummer());
+        statement.setString(9,anwalt.getUserPassword());
+        statement.setString(10,anwalt.getBranche());
+        statement.setInt(11,3);
+        statement.setInt(12, -1);
+        statement.execute();
+
+    }
+
+    public static void saveNewManager(Manager manager) throws SQLException {
+        String sql = "insert into person (vorname, nachname, tcNummer, email, kontaktNummer, geschlecht, " +
+                "alterAnwalt, userName, userPassword, branche, login, managersTC) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+        Connection connection = connectDB();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1,manager.getVorname());
+        statement.setString(2,manager.getNachname());
+        statement.setString(3,manager.getTcNummer());
+        statement.setString(4,manager.getEmail());
+        statement.setString(5,manager.getKontaktNummer());
+        statement.setString(6,manager.getGeschlecht());
+        statement.setInt(7,manager.getAlter());
+        statement.setString(8,manager.getTcNummer());
+        statement.setString(9,manager.getUserPassword());
+        statement.setString(10,manager.getBranche());
+        statement.setInt(11,2);
+        statement.setInt(12, -1);
+        statement.execute();
+    }
+
+    public static void deletePerson(String tc) throws SQLException {
         Connection connection = connectDB();
         PreparedStatement statement = connection.prepareStatement("delete from person where tcNummer = ?");
-        statement.setInt(1, tc);
+        statement.setString(1, tc);
         statement.executeUpdate();
+    }
+
+    public static boolean personExistiert(String tc) throws SQLException {
+        Connection connection = connectDB();
+        PreparedStatement statement = connection.prepareStatement("select 1 from person where tcNummer = ?");
+        statement.setString(1, tc);
+        ResultSet rs = statement.executeQuery();
+        return rs.next();
     }
 
     public static void deleteCase(int caseID) throws SQLException {
@@ -203,7 +256,7 @@ public class Database {
         }
     }
 
-    public static ObservableList<Fall> getDataFall(int tc, int index) {
+    public static ObservableList<Fall> getDataFall(String tc, int index) {
         Connection connection = connectDB();
         ObservableList<Fall> list = FXCollections.observableArrayList();
         String sql;
@@ -214,7 +267,7 @@ public class Database {
                 sql = "select * from fall where caseForManager = ?";
             }
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, tc);
+            ps.setString(1, tc);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -229,14 +282,14 @@ public class Database {
         return list;
     }
 
-    public static ObservableList<Fall> getAssignableCasesInManager(int tc) {
+    public static ObservableList<Fall> getAssignableCasesInManager(String tc) {
         Connection connection = connectDB();
         ObservableList<Fall> list = FXCollections.observableArrayList();
         String sql = "select * from fall where caseForLawyer = ? and caseForManager = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, -1);
-            ps.setInt(2, tc);
+            ps.setString(2, tc);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -252,7 +305,7 @@ public class Database {
     }
 
 
-    public static ObservableList<Anwalt> getLawyersForManager(int manager_tc) {
+    public static ObservableList<Anwalt> getLawyersForManager(String manager_tc) {
         //public static ObservableList<Anwalt> getLawyersForManager(){
         Connection connection = connectDB();
         ObservableList<Anwalt> list = FXCollections.observableArrayList();
@@ -260,11 +313,11 @@ public class Database {
         try {
             PreparedStatement ps = connection.prepareStatement("select * from person where managersTC = ?");
             //PreparedStatement ps = connection.prepareStatement("select * from person");
-            ps.setInt(1, manager_tc);
+            ps.setString(1, manager_tc);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Anwalt(rs.getString("vorname"), rs.getString("nachname"),
-                        rs.getString("branche"), rs.getInt("tcNummer")));
+                        rs.getString("branche"), rs.getString("tcNummer")));
                 System.out.println("lawyer in manager group: " + rs.getString("branche"));
                 System.out.println("lawyer in manager group: " + rs.getString("vorname"));
                 System.out.println("lawyer in manager group: " + rs.getString("nachname"));
@@ -284,11 +337,11 @@ public class Database {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Manager(rs.getString("vorname"), rs.getString("nachname"),
-                        rs.getString("branche"), rs.getInt("tcNummer")));
+                        rs.getString("branche"), rs.getString("tcNummer")));
                 System.out.println("manager: " + rs.getString("branche"));
                 System.out.println("manager: " + rs.getString("vorname"));
                 System.out.println("manager: " + rs.getString("nachname"));
-                System.out.println("manager: " + rs.getInt("tcNummer"));
+                System.out.println("manager: " + rs.getString("tcNummer"));
             }
         } catch (Exception e) {
 
@@ -301,15 +354,15 @@ public class Database {
         ObservableList<Anwalt> list = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = connection.prepareStatement("select vorname, nachname, tcNummer, branche " +
-                    "from person where login = 3");
+                    "from person where login =  3");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Anwalt(rs.getString("vorname"), rs.getString("nachname"),
-                        rs.getString("branche"), rs.getInt("tcNummer")));
+                        rs.getString("branche"), rs.getString("tcNummer")));
                 System.out.println("lawyer: " + rs.getString("branche"));
                 System.out.println("lawyer: " + rs.getString("vorname"));
                 System.out.println("lawyer: " + rs.getString("nachname"));
-                System.out.println("lawyer: " + rs.getInt("tcNummer"));
+                System.out.println("lawyer: " + rs.getString("tcNummer"));
             }
         } catch (Exception e) {
 
@@ -335,7 +388,7 @@ public class Database {
     }
 
 
-    public static void assignCase(int tc, int caseID, int index) throws SQLException {
+    public static void assignCase(String tc, int caseID, int index) throws SQLException {
         Connection connection = connectDB();
         String sql;
         if (index == 3) {
@@ -344,22 +397,32 @@ public class Database {
             sql = "update fall set caseForManager = ? where id_fall = ?";
         }
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, tc);
+        statement.setString(1, tc);
         statement.setInt(2, caseID);
         statement.executeUpdate();
     }
 
-    public static void assignLawyer(int tcLawyer, int tcManager) throws SQLException {
+    public static void assignLawyer(String tcLawyer, String tcManager) throws SQLException {
         Connection connection = connectDB();
         String sql;
         sql = "update person set managersTC = ? where tcNummer = ?";
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, tcManager);
-        statement.setInt(2, tcLawyer);
+        statement.setString(1, tcManager);
+        statement.setString(2, tcLawyer);
         statement.executeUpdate();
     }
 
-    public static ObservableList<Fall> getDataAssignedCases(int tc, int index) { // on click
+    public static void retainLawyer(String tcLawyer) throws SQLException{
+        Connection connection = connectDB();
+        String sql;
+        sql = "update person set managersTC = ? where tcNummer = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, "-1");
+        statement.setString(2, tcLawyer);
+        statement.executeUpdate();
+    }
+
+    public static ObservableList<Fall> getDataAssignedCases(String tc, int index) { // on click
         Connection connection = connectDB();
         ObservableList<Fall> list = FXCollections.observableArrayList();
         String sql;
@@ -370,7 +433,7 @@ public class Database {
         }
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, tc);
+            ps.setString(1, tc);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Fall(Integer.parseInt(rs.getString("id_fall")), rs.getString("fallArt"),
@@ -383,18 +446,22 @@ public class Database {
         return list;
     }
 
-    public static void retainCase(int tc, int caseID, int index) throws SQLException {
+    public static void retainCase(String tc, int caseID, int index) throws SQLException {
         Connection connection = connectDB();
         String sql;
         if (index == 3) {
-            sql = "update fall set caseForLawyer = -1 where caseForLawyer = ? and id_fall = ?";
+            sql = "update fall set caseForLawyer = ? where caseForLawyer = ? and id_fall = ?";
+
         } else {
             sql = "update fall set caseForManager = ? where caseForManager = ? and id_fall = ?";
+
         }
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, tc);
-        statement.setInt(2, caseID);
+        statement.setString(1, "-1");
+        statement.setString(2, tc);
+        statement.setInt(3, caseID);
         statement.executeUpdate();
+
     }
 
     public static ObservableList<Anwalt> getAssignableLawyers() {
@@ -402,11 +469,13 @@ public class Database {
         ObservableList<Anwalt> list = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = connection.prepareStatement("select vorname, nachname, tcNummer, branche " +
-                    "from person where managersTC = -1 and login = 3");
+                    "from person where managersTC = ? and login = 3");
+            ps.setString(1,"-1");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Anwalt(rs.getString("vorname"), rs.getString("nachname"),
-                        rs.getString("branche"), rs.getInt("tcNummer")));
+                        rs.getString("branche"), rs.getString("tcNummer")));
+                System.out.println(rs.getString("vorname"));
             }
         } catch (Exception e) {
 
@@ -439,16 +508,16 @@ public class Database {
         return list;
     }
 
-    public static Anwalt getLawyerDetails(int tc) {
+    public static Anwalt getLawyerDetails(String tc) {
         Connection connection = connectDB();
         Anwalt lawyer = null;
         try {
             PreparedStatement statement = connection.prepareStatement("select * from person where tcNummer = ?");
-            statement.setInt(1,tc);
+            statement.setString(1,tc);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 lawyer =new Anwalt(rs.getString("vorname"), rs.getString("nachname"),
-                         rs.getInt("tcNummer"), rs.getString("email"), rs.getString("kontaktnummer"),
+                         rs.getString("tcNummer"), rs.getString("email"), rs.getString("kontaktnummer"),
                         rs.getString("geschlecht"),rs.getInt("alterAnwalt"), rs.getString("userName"),
                         rs.getString("userPassword"), rs.getString("branche"));
             }
@@ -456,6 +525,25 @@ public class Database {
             e.printStackTrace();
         }
         return lawyer;
+    }
+
+    public static Manager getManagerDetails(String tc) {
+        Connection connection = connectDB();
+        Manager manager = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("select * from person where tcNummer = ?");
+            statement.setString(1,tc);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                manager =new Manager(rs.getString("vorname"), rs.getString("nachname"),
+                        rs.getString("tcNummer"), rs.getString("email"), rs.getString("kontaktnummer"),
+                        rs.getString("geschlecht"),rs.getInt("alterAnwalt"), rs.getString("userName"),
+                        rs.getString("userPassword"), rs.getString("branche"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return manager;
     }
 }
 

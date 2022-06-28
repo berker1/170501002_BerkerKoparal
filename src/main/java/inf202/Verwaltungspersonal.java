@@ -6,7 +6,7 @@ public class Verwaltungspersonal extends Person{
     private String userPassword;
     private int loginVerwaltung = 3;
 
-    public Verwaltungspersonal(String vorname, String nachname, int tcNummer, String email, String kontaktNummer,
+    public Verwaltungspersonal(String vorname, String nachname, String tcNummer, String email, String kontaktNummer,
                                String geschlecht, int alter, String userName, String userPassword) {
         super(vorname, nachname, tcNummer, email, kontaktNummer, geschlecht, alter);
         this.userName = userName;

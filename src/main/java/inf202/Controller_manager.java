@@ -97,7 +97,7 @@ public class Controller_manager implements Initializable {
     }
 
     private void clickTableLawyer(){
-        int tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
         int index = 3;
         ListC= Database.getDataAssignedCases(tc, index);
         tableCase.setItems(ListC);
@@ -137,7 +137,7 @@ public class Controller_manager implements Initializable {
     }
 
     public void assignCase(ActionEvent e) throws IOException, SQLException {
-        int tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
         int caseID = tableCase.getItems().get(tableCase.getSelectionModel().getSelectedIndex()).getFallId();
         int index = 3;
         Database.assignCase(tc, caseID, index);
@@ -146,7 +146,7 @@ public class Controller_manager implements Initializable {
 
 
     public void retainCase(ActionEvent e) throws IOException, SQLException {
-        int tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
         int caseID = tableCase.getItems().get(tableCase.getSelectionModel().getSelectedIndex()).getFallId();
         int index = 3;
         Database.retainCase(tc, caseID, index);
@@ -171,12 +171,12 @@ public class Controller_manager implements Initializable {
 
 
     public void showLawyerDetails(ActionEvent e) throws IOException {
-        int tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
+        String tc = tableLawyers.getItems().get(tableLawyers.getSelectionModel().getSelectedIndex()).getTcNummer();
         String name = "Lawyer Details";
-        this.toPersonPage(tc, -1, name);
+        this.toPersonPage(tc, 3, name);
     }
 
-    private void toPersonPage(int tc, int index, String name) throws IOException {
+    private void toPersonPage(String tc, int index, String name) throws IOException {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("Screen_person.fxml"));
         root = loader.load();
         Controller_person controller_person = loader.getController();
